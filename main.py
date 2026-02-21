@@ -258,45 +258,46 @@ class GoogleTVRemoteApp:
         ttk.Label(header, text="Google TV Remote", style="Header.TLabel").pack(anchor="w")
         ttk.Label(
             header,
-            text="Modern desktop remote with app launcher and full keyboard hotkeys.",
+            text="Premium compact layout: large remote, compact control sidebar.",
             style="SubHeader.TLabel",
         ).pack(anchor="w")
 
-        body = ttk.Panedwindow(shell, orient="horizontal")
+        body = ttk.Frame(shell)
         body.pack(fill="both", expand=True, pady=(2, 8))
+        body.grid_columnconfigure(0, weight=5)
+        body.grid_columnconfigure(1, weight=2)
+        body.grid_rowconfigure(0, weight=1)
 
-        left = ttk.Frame(body)
-        right = ttk.Frame(body)
-        body.add(left, weight=4)
-        body.add(right, weight=2)
+        remote_col = ttk.Frame(body)
+        remote_col.grid(row=0, column=0, sticky="nsew", padx=(0, 10))
+        side_col = ttk.Frame(body)
+        side_col.grid(row=0, column=1, sticky="nsew")
 
-        self._build_connection_card(left)
-        self._build_pairing_card(left)
-        self._build_remote_card(left)
-        self._build_apps_sidebar(right)
-        self._build_hotkeys_sidebar(right)
+        self._build_remote_card(remote_col)
+        self._build_connection_card(side_col)
+        self._build_pairing_card(side_col)
+        self._build_apps_sidebar(side_col)
 
         ttk.Label(shell, textvariable=self.status_text, style="Status.TLabel", anchor="w").pack(fill="x")
 
     def _build_connection_card(self, parent: ttk.Frame) -> None:
-        card = ttk.LabelFrame(parent, text="Connection", style="Card.TLabelframe", padding=12)
-        card.pack(fill="x", pady=(0, 10))
+        card = ttk.LabelFrame(parent, text="Connection", style="Card.TLabelframe", padding=8)
+        card.pack(fill="x", pady=(0, 8))
 
-        ttk.Label(card, text="Discovered TVs").grid(row=0, column=0, sticky="w")
+        ttk.Label(card, text="TV").grid(row=0, column=0, sticky="w")
         self.device_combo = ttk.Combobox(card, textvariable=self.device_var, state="readonly")
-        self.device_combo.grid(row=1, column=0, columnspan=3, sticky="ew", pady=(4, 8))
+        self.device_combo.grid(row=1, column=0, columnspan=3, sticky="ew", pady=(2, 6))
 
-        ttk.Label(card, text="TV IP (manual)").grid(row=2, column=0, sticky="w")
-        ttk.Entry(card, textvariable=self.ip_var).grid(row=3, column=0, columnspan=3, sticky="ew", pady=(4, 8))
+        ttk.Entry(card, textvariable=self.ip_var).grid(row=2, column=0, columnspan=3, sticky="ew", pady=(0, 6))
 
-        ttk.Button(card, text="Discover  (Ctrl+R)", style="Soft.TButton", command=self._discover_devices).grid(
-            row=4, column=0, sticky="ew"
+        ttk.Button(card, text="Discover", style="Soft.TButton", command=self._discover_devices).grid(
+            row=3, column=0, sticky="ew"
         )
-        ttk.Button(card, text="Connect  (Ctrl+Shift+C)", style="Accent.TButton", command=self._connect).grid(
-            row=4, column=1, sticky="ew", padx=6
+        ttk.Button(card, text="Connect", style="Accent.TButton", command=self._connect).grid(
+            row=3, column=1, sticky="ew", padx=4
         )
-        ttk.Button(card, text="Disconnect  (Ctrl+Shift+X)", style="Soft.TButton", command=self._disconnect).grid(
-            row=4, column=2, sticky="ew"
+        ttk.Button(card, text="Off", style="Soft.TButton", command=self._disconnect).grid(
+            row=3, column=2, sticky="ew"
         )
 
         card.grid_columnconfigure(0, weight=1)
@@ -304,74 +305,81 @@ class GoogleTVRemoteApp:
         card.grid_columnconfigure(2, weight=1)
 
     def _build_pairing_card(self, parent: ttk.Frame) -> None:
-        card = ttk.LabelFrame(parent, text="Pairing", style="Card.TLabelframe", padding=12)
-        card.pack(fill="x", pady=(0, 10))
-        ttk.Button(card, text="Start Pairing", style="Soft.TButton", command=self._start_pairing).grid(
+        card = ttk.LabelFrame(parent, text="Pairing", style="Card.TLabelframe", padding=8)
+        card.pack(fill="x", pady=(0, 8))
+        ttk.Button(card, text="Pair", style="Soft.TButton", command=self._start_pairing).grid(
             row=0, column=0, sticky="ew"
         )
-        ttk.Entry(card, textvariable=self.pair_code_var).grid(row=0, column=1, padx=8, sticky="ew")
-        ttk.Button(card, text="Submit PIN", style="Accent.TButton", command=self._finish_pairing).grid(
+        ttk.Entry(card, textvariable=self.pair_code_var).grid(row=0, column=1, padx=4, sticky="ew")
+        ttk.Button(card, text="OK", style="Accent.TButton", command=self._finish_pairing).grid(
             row=0, column=2, sticky="ew"
         )
         card.grid_columnconfigure(1, weight=1)
 
     def _build_remote_card(self, parent: ttk.Frame) -> None:
-        card = ttk.LabelFrame(parent, text="Remote", style="Card.TLabelframe", padding=12)
+        card = ttk.LabelFrame(parent, text="Remote", style="Card.TLabelframe", padding=8)
         card.pack(fill="both", expand=True)
-        self.remote_card = card
 
-        positions = [
-            ("POWER", 0, 0),
-            ("MUTE", 0, 1),
-            ("HOME", 0, 2),
-            ("BACK", 0, 3),
-            ("DPAD_UP", 1, 1),
-            ("DPAD_LEFT", 2, 0),
-            ("DPAD_CENTER", 2, 1),
-            ("DPAD_RIGHT", 2, 2),
-            ("DPAD_DOWN", 3, 1),
-            ("MEDIA_PLAY_PAUSE", 4, 0),
-            ("MEDIA_REWIND", 4, 1),
-            ("MEDIA_FAST_FORWARD", 4, 2),
-            ("VOLUME_UP", 5, 0),
-            ("VOLUME_DOWN", 5, 1),
-            ("CHANNEL_UP", 5, 2),
-            ("CHANNEL_DOWN", 5, 3),
-        ]
-        for key_code, row, col in positions:
-            spec = next(x for x in REMOTE_BUTTONS if x["key_code"] == key_code)
-            caption = f'{spec["label"]}\n[{spec["hotkey"]}]'
-            ttk.Button(
-                card,
-                text=caption,
-                style="Key.TButton",
-                command=lambda k=key_code: self._send_key(k),
-            ).grid(row=row, column=col, sticky="nsew", padx=5, pady=5)
+        surface = tk.Frame(card, bg="#15181d", bd=0, relief="flat")
+        surface.pack(fill="both", expand=True)
+        surface.grid_columnconfigure(0, weight=1)
 
-        text_row = ttk.Frame(card, style="Card.TFrame")
-        text_row.grid(row=6, column=0, columnspan=4, sticky="ew", pady=(12, 4))
-        self.text_entry = ttk.Entry(text_row, textvariable=self.text_var)
-        self.text_entry.pack(side="left", fill="x", expand=True)
-        ttk.Button(text_row, text="Send  (Ctrl+Enter)", style="Accent.TButton", command=self._send_text).pack(
-            side="left", padx=(8, 0)
-        )
+        top = tk.Frame(surface, bg="#15181d")
+        top.grid(row=0, column=0, pady=(10, 8))
+        tk.Button(top, text="PWR", command=lambda: self._send_key("POWER"), bg="#0d0f13", fg="#ffffff", bd=0, relief="flat", font=("Segoe UI", 9, "bold"), cursor="hand2").pack(side="left", padx=6)
+        tk.Button(top, text="MUTE", command=lambda: self._send_key("MUTE"), bg="#0d0f13", fg="#ffffff", bd=0, relief="flat", font=("Segoe UI", 9, "bold"), cursor="hand2").pack(side="left", padx=6)
 
-        ttk.Label(
-            card,
-            text="Press F1 for full shortcut list. Hotkeys are disabled while typing in text fields.",
-            style="Muted.TLabel",
-        ).grid(row=7, column=0, columnspan=4, sticky="w", pady=(6, 0))
+        dpad = tk.Frame(surface, bg="#111418", width=300, height=300)
+        dpad.grid(row=1, column=0, pady=(4, 10))
+        dpad.grid_propagate(False)
+        dpad.grid_rowconfigure((0, 1, 2), weight=1)
+        dpad.grid_columnconfigure((0, 1, 2), weight=1)
 
-        for i in range(4):
-            card.grid_columnconfigure(i, weight=1)
+        bstyle = dict(bg="#111418", fg="#5f6672", activebackground="#111418", activeforeground="#768091", bd=0, relief="flat", font=("Segoe UI", 22, "bold"), cursor="hand2")
+        tk.Button(dpad, text="^", command=lambda: self._send_key("DPAD_UP"), **bstyle).grid(row=0, column=1)
+        tk.Button(dpad, text="<", command=lambda: self._send_key("DPAD_LEFT"), **bstyle).grid(row=1, column=0)
+        tk.Button(dpad, text=">", command=lambda: self._send_key("DPAD_RIGHT"), **bstyle).grid(row=1, column=2)
+        tk.Button(dpad, text="v", command=lambda: self._send_key("DPAD_DOWN"), **bstyle).grid(row=2, column=1)
+        tk.Button(
+            dpad,
+            text="OK",
+            command=lambda: self._send_key("DPAD_CENTER"),
+            bg="#4f545b",
+            fg="#ffffff",
+            activebackground="#4f545b",
+            activeforeground="#ffffff",
+            bd=0,
+            relief="flat",
+            font=("Segoe UI", 12, "bold"),
+            width=8,
+            height=3,
+            cursor="hand2",
+        ).grid(row=1, column=1)
+
+        row1 = tk.Frame(surface, bg="#15181d")
+        row1.grid(row=2, column=0, pady=(0, 8))
+        for text, key in [("<-", "BACK"), ("HOME", "HOME"), ("MIC", "ASSIST")]:
+            tk.Button(row1, text=text, command=lambda k=key: self._send_key(k), bg="#0d0f13", fg="#ffffff", bd=0, relief="flat", font=("Segoe UI", 11, "bold"), width=8, height=2, cursor="hand2").pack(side="left", padx=8)
+
+        row2 = tk.Frame(surface, bg="#15181d")
+        row2.grid(row=3, column=0, pady=(0, 10))
+        for text, key in [("VOL-", "VOLUME_DOWN"), ("VOL+", "VOLUME_UP"), ("PLAY", "MEDIA_PLAY_PAUSE")]:
+            tk.Button(row2, text=text, command=lambda k=key: self._send_key(k), bg="#0d0f13", fg="#ffffff", bd=0, relief="flat", font=("Segoe UI", 11, "bold"), width=10, height=2, cursor="hand2").pack(side="left", padx=8)
+
+        text_row = tk.Frame(surface, bg="#15181d")
+        text_row.grid(row=4, column=0, sticky="ew", padx=20, pady=(2, 12))
+        text_row.grid_columnconfigure(0, weight=1)
+        self.text_entry = tk.Entry(text_row, textvariable=self.text_var, bg="#f6f7f9", fg="#0f172a", insertbackground="#0f172a", bd=0, relief="flat")
+        self.text_entry.grid(row=0, column=0, sticky="ew", ipady=8)
+        tk.Button(text_row, text="Send", command=self._send_text, bg="#0d9488", fg="#ffffff", bd=0, relief="flat", font=("Segoe UI", 10, "bold"), cursor="hand2").grid(row=0, column=1, padx=(8, 0))
 
     def _build_apps_sidebar(self, parent: ttk.Frame) -> None:
-        card = ttk.LabelFrame(parent, text="TV Apps", style="Card.TLabelframe", padding=12)
-        card.pack(fill="both", expand=True, pady=(0, 10))
+        card = ttk.LabelFrame(parent, text="TV Apps", style="Card.TLabelframe", padding=8)
+        card.pack(fill="both", expand=True, pady=(0, 8))
 
         self.apps_listbox = tk.Listbox(
             card,
-            height=11,
+            height=7,
             activestyle="none",
             borderwidth=0,
             highlightthickness=1,
@@ -385,22 +393,20 @@ class GoogleTVRemoteApp:
         scroll.grid(row=0, column=2, sticky="ns")
         self.apps_listbox.configure(yscrollcommand=scroll.set)
 
-        ttk.Label(card, text="App Name").grid(row=1, column=0, columnspan=3, sticky="w", pady=(8, 0))
-        ttk.Entry(card, textvariable=self.app_name_var).grid(row=2, column=0, columnspan=3, sticky="ew", pady=(2, 6))
-        ttk.Label(card, text="Package ID").grid(row=3, column=0, columnspan=3, sticky="w")
-        ttk.Entry(card, textvariable=self.app_id_var).grid(row=4, column=0, columnspan=3, sticky="ew", pady=(2, 8))
+        ttk.Entry(card, textvariable=self.app_name_var).grid(row=1, column=0, columnspan=3, sticky="ew", pady=(6, 4))
+        ttk.Entry(card, textvariable=self.app_id_var).grid(row=2, column=0, columnspan=3, sticky="ew", pady=(0, 6))
 
-        ttk.Button(card, text="Launch  (Double-click)", style="Accent.TButton", command=self._launch_selected_app).grid(
-            row=5, column=0, columnspan=3, sticky="ew", pady=(0, 8)
+        ttk.Button(card, text="Launch", style="Accent.TButton", command=self._launch_selected_app).grid(
+            row=3, column=0, columnspan=3, sticky="ew", pady=(0, 6)
         )
         ttk.Button(card, text="Add / Update", style="Soft.TButton", command=self._upsert_app).grid(
-            row=6, column=0, sticky="ew"
+            row=4, column=0, sticky="ew"
         )
         ttk.Button(card, text="Remove", style="Soft.TButton", command=self._remove_app).grid(
-            row=6, column=1, sticky="ew", padx=6
+            row=4, column=1, sticky="ew", padx=4
         )
         ttk.Button(card, text="Defaults", style="Soft.TButton", command=self._reset_apps_defaults).grid(
-            row=6, column=2, sticky="ew"
+            row=4, column=2, sticky="ew"
         )
 
         card.grid_rowconfigure(0, weight=1)
