@@ -6,8 +6,11 @@ A native Windows desktop GUI remote for Google TV / Android TV devices on the sa
 - Auto-discover Google TV devices on local network
 - Manual IP connection fallback
 - Pairing PIN flow (same protocol used by Android Google TV remote apps)
+- Modern desktop UI (clean cards, split layout, responsive resizing)
 - D-pad, navigation, power, volume, media, channel keys
 - Text input to TV
+- App sidebar with one-click launch (editable app list + package IDs)
+- Full keyboard hotkeys for remote buttons with in-app hotkey legend (`F1`)
 
 ## Requirements
 - Windows 10/11
