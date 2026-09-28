@@ -1,0 +1,34 @@
+[
+  {
+    "name": "YouTube",
+    "app_id": "com.google.android.youtube.tv"
+  },
+  {
+    "name": "Netflix",
+    "app_id": "com.netflix.ninja"
+  },
+  {
+    "name": "Prime Video",
+    "app_id": "com.amazon.amazonvideo.livingroom"
+  },
+  {
+    "name": "Disney+",
+    "app_id": "com.disney.disneyplus"
+  },
+  {
+    "name": "Hulu",
+    "app_id": "com.hulu.livingroomplus"
+  },
+  {
+    "name": "Spotify",
+    "app_id": "com.spotify.tv.android"
+  },
+  {
+    "name": "Plex",
+    "app_id": "com.plexapp.android"
+  },
+  {
+    "name": "Kodi",
+    "app_id": "org.xbmc.kodi"
+  }
+]

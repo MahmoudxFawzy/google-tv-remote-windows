@@ -1,0 +1,44 @@
+[
+  {
+    "name": "YouTube",
+    "app_id": "com.google.android.youtube.tv",
+    "bg": "#cc0000",
+    "type": "youtube"
+  },
+  {
+    "name": "Netflix",
+    "app_id": "com.netflix.ninja",
+    "bg": "#141414",
+    "type": "netflix"
+  },
+  {
+    "name": "Disney+",
+    "app_id": "com.disney.disneyplus",
+    "bg": "#0c1840",
+    "type": "disney"
+  },
+  {
+    "name": "Prime Video",
+    "app_id": "com.amazon.amazonvideo.livingroom",
+    "bg": "#00a8e1",
+    "type": "prime"
+  },
+  {
+    "name": "Spotify",
+    "app_id": "com.spotify.tv.android",
+    "bg": "#1db954",
+    "type": "spotify"
+  },
+  {
+    "name": "Plex",
+    "app_id": "com.plexapp.android",
+    "bg": "#24262b",
+    "type": "plex"
+  },
+  {
+    "name": "Explore More",
+    "app_id": "custom",
+    "bg": "#20252f",
+    "type": "more"
+  }
+]

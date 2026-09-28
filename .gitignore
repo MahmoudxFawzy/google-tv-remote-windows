@@ -1,11 +1,30 @@
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*$py.class
 *.pyo
 
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+
+# Build outputs & PyInstaller
 build/
 *.spec
 
+# User credentials & certificates (keep private)
 certs/
+*.pem
 
-.venv/
-venv/
+# Local caches & runtime configs
+*.log
+tv_cache.json
+
+# IDE & OS temporary files
+.vscode/
+.idea/
+*.swp
+*~
+Thumbs.db
