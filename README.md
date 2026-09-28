@@ -4,9 +4,18 @@
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue?style=flat-square&logo=python)](https://www.python.org/)
 [![Platform Support](https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-blue?style=flat-square&logo=windows)](https://www.microsoft.com/windows)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/MahmoudxFawzy/google-tv-remote-windows?style=flat-square&color=orange)](https://github.com/MahmoudxFawzy/google-tv-remote-windows/releases)
+[![Download Executable](https://img.shields.io/badge/Download-Portable_.exe-00C853?style=flat-square&logo=windows&logoColor=white)](https://github.com/MahmoudxFawzy/google-tv-remote-windows/releases/latest)
 [![GitHub stars](https://img.shields.io/github/stars/MahmoudxFawzy/google-tv-remote-windows?style=flat-square)](https://github.com/MahmoudxFawzy/google-tv-remote-windows/stargazers)
 
 A lightweight, modern, native Windows desktop remote control app for **Google TV** and **Android TV** devices. Control your TV directly from your computer over the local Wi-Fi network with advanced features like keyboard hotkeys, automatic device discovery, custom app launchers, and direct text input.
+
+> [!TIP]
+> ### ⚡ Quick Download (No Python Required)
+> Want to use the remote right away without installing Python or cloning code?
+>
+> 🚀 **[⬇️ Download Standalone Portable Windows App (`GoogleTVRemote.exe`)](https://github.com/MahmoudxFawzy/google-tv-remote-windows/releases/latest)**
+>
+> *Single standalone executable — just download and double-click to run!*
 
 ---
 
@@ -26,33 +35,38 @@ A lightweight, modern, native Windows desktop remote control app for **Google TV
 ## 📋 System Requirements
 
 *   **Operating System**: Windows 10 or Windows 11.
-*   **Python**: Version 3.10 or newer.
+*   **Python**: Version 3.10 or newer *(only required if running from source)*.
 *   **Network**: Both the Windows PC and the Google TV / Android TV must be connected to the same Wi-Fi / LAN network.
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Quick Start & Installation
 
-### 1. Installation
+### Option A: Standalone Portable App *(Recommended)*
 
-Clone this repository and install the required dependencies:
+1. Head to the [**Latest Releases**](https://github.com/MahmoudxFawzy/google-tv-remote-windows/releases/latest) page.
+2. Download **`GoogleTVRemote.exe`**.
+3. Double-click to launch — no installation, Python environment, or terminal commands needed.
 
-```powershell
-# Clone the repository
-git clone https://github.com/MahmoudxFawzy/google-tv-remote-windows.git
-cd google-tv-remote-windows
+---
 
-# Install dependencies
-python -m pip install -r requirements.txt
-```
+### Option B: Run from Source *(Developers)*
 
-### 2. Running the App
+1. Clone this repository:
+   ```powershell
+   git clone https://github.com/MahmoudxFawzy/google-tv-remote-windows.git
+   cd google-tv-remote-windows
+   ```
 
-Start the application with:
+2. Install dependencies:
+   ```powershell
+   python -m pip install -r requirements.txt
+   ```
 
-```powershell
-python main.py
-```
+3. Start the application:
+   ```powershell
+   python main.py
+   ```
 
 ---
 
